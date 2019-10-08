@@ -16,35 +16,35 @@
 # limitations under the License.
 #
 
-defmodule PrettyLog.LogFmtFormatter do
+defmodule PrettyLog.UserFriendlyFormatter do
   alias PrettyLog.TextSanitizer
 
-  epoch = {{1970, 1, 1}, {0, 0, 0}}
-  @epoch :calendar.datetime_to_gregorian_seconds(epoch)
-
   def format(level, message, timestamp, metadata) do
-    {date, {h, m, s, millis}} = timestamp
+    {_date, {h, m, s, millis}} = timestamp
 
     pre_message_metadata = Application.get_env(:logfmt, :prepend_metadata, [])
 
     {pre_meta, metadata} = Keyword.split(metadata, pre_message_metadata)
 
-    timestamp =
-      :erlang.localtime_to_universaltime({date, {h, m, s}})
-      |> :calendar.datetime_to_gregorian_seconds()
-      |> Kernel.-(@epoch)
+    time_string = "#{to_string(h)}:#{to_string(m)}:#{to_string(s)}.#{to_string(millis)}"
 
-    timestamp_string =
-      (timestamp * 1000 + millis)
-      |> :calendar.system_time_to_rfc3339(unit: :millisecond)
-      |> to_string()
+    level_string =
+      level
+      |> TextSanitizer.sanitize()
+      |> String.upcase()
+      |> String.pad_trailing(5)
 
-    kv =
-      TextSanitizer.sanitize_keyword(
-        [{:ts, timestamp_string}, {:level, level} | pre_meta] ++ [{:message, message} | metadata]
-      )
+    padded_message =
+      message
+      |> TextSanitizer.sanitize()
+      |> String.pad_trailing(48)
 
-    [Logfmt.encode(kv), "\n"]
+    encoded_metadata =
+      (pre_meta ++ metadata)
+      |> TextSanitizer.sanitize_keyword()
+      |> Logfmt.encode()
+
+    "#{time_string}\t|#{level_string}| #{padded_message}\t| #{encoded_metadata}\n"
   rescue
     _ -> "LOG_FORMATTER_ERROR: #{inspect({level, message, timestamp, metadata})}\n"
   end
