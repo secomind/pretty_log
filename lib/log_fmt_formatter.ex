@@ -41,7 +41,7 @@ defmodule PrettyLog.LogFmtFormatter do
 
     kv =
       TextSanitizer.sanitize_keyword(
-        [{:level, level}, {:ts, timestamp_string} | pre_meta] ++ [{:message, message} | metadata]
+        [{:level, level}, {:ts, timestamp_string} | pre_meta] ++ [{:msg, message} | metadata]
       )
 
     [Logfmt.encode(kv), "\n"]

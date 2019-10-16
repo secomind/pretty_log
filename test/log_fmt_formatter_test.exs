@@ -12,6 +12,6 @@ defmodule PrettyLog.LogFmtFormatterTest do
                []
              )
            ) ==
-             "level=warn ts=2019-10-08T11:58:39.005+02:00 message=\"This is a test message\"\n"
+             "level=warn ts=2019-10-08T11:58:39.005+02:00 msg=\"This is a test message\"\n"
   end
 end
