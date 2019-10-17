@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-defmodule PrettyLog.LogFmtFormatter do
+defmodule PrettyLog.LogfmtFormatter do
   alias PrettyLog.TextSanitizer
 
   epoch = {{1970, 1, 1}, {0, 0, 0}}

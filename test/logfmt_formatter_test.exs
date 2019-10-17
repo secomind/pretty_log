@@ -1,11 +1,11 @@
-defmodule PrettyLog.LogFmtFormatterTest do
+defmodule PrettyLog.LogfmtFormatterTest do
   use ExUnit.Case
-  alias PrettyLog.LogFmtFormatter
-  doctest PrettyLog.LogFmtFormatter
+  alias PrettyLog.LogfmtFormatter
+  doctest PrettyLog.LogfmtFormatter
 
   test "formats a warning log entry" do
     assert :erlang.iolist_to_binary(
-             LogFmtFormatter.format(
+             LogfmtFormatter.format(
                :warn,
                "This is a test message",
                {{2019, 10, 8}, {11, 58, 39, 5}},
