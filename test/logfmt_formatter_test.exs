@@ -26,4 +26,17 @@ defmodule PrettyLog.LogfmtFormatterTest do
            ) ==
              "level=warn ts=2019-10-08T11:58:39.005+02:00 msg=\"This is a test message\" line=100\n"
   end
+
+  test "formats an info log entry with a tuple metadata" do
+    assert :erlang.iolist_to_binary(
+             LogfmtFormatter.format(
+               :warn,
+               "This is a test message",
+               {{2019, 10, 8}, {11, 58, 39, 5}},
+               tuple: {:foo, 42, :bar}
+             )
+           ) ==
+             "level=warn ts=2019-10-08T11:58:39.005+02:00 msg=\"This is a test message\" " <>
+               "tuple=\"base64-encoded-ext-term:g2gDZAADZm9vYSpkAANiYXI=\"\n"
+  end
 end
