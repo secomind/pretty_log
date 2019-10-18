@@ -11,6 +11,6 @@ defmodule PrettyLog.UserFriendlyFormatterTest do
                {{2019, 10, 8}, {11, 58, 39, 5}},
                []
              )
-           ) == "11:58:39.5\t|WARN | This is a test message                          \t| \n"
+           ) == "11:58:39.5\t|WARN | This is a test message\n"
   end
 end

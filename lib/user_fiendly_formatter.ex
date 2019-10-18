@@ -34,17 +34,18 @@ defmodule PrettyLog.UserFriendlyFormatter do
       |> String.upcase()
       |> String.pad_trailing(5)
 
-    padded_message =
-      message
-      |> TextSanitizer.sanitize()
-      |> String.pad_trailing(48)
+    sanitized_message = TextSanitizer.sanitize(message)
 
     encoded_metadata =
       (pre_meta ++ metadata)
       |> TextSanitizer.sanitize_keyword()
       |> Logfmt.encode()
 
-    "#{time_string}\t|#{level_string}| #{padded_message}\t| #{encoded_metadata}\n"
+    if encoded_metadata != "" do
+      "#{time_string}\t|#{level_string}| #{sanitized_message}  #{encoded_metadata}\n"
+    else
+      "#{time_string}\t|#{level_string}| #{sanitized_message}\n"
+    end
   rescue
     _ -> "LOG_FORMATTER_ERROR: #{inspect({level, message, timestamp, metadata})}\n"
   end
