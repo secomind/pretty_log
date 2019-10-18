@@ -45,6 +45,14 @@ defmodule PrettyLog.TextSanitizer do
     inspect(value)
   end
 
+  def sanitize([{k, _v} | _tail] = value) when is_atom(k) do
+    base64_encode_term(value)
+  end
+
+  def sanitize([a | _tail] = value) when is_atom(a) do
+    base64_encode_term(value)
+  end
+
   def sanitize(value) when is_list(value) do
     value
     |> Formatter.prune()
