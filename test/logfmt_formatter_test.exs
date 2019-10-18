@@ -39,4 +39,17 @@ defmodule PrettyLog.LogfmtFormatterTest do
              "level=warn ts=2019-10-08T11:58:39.005+02:00 msg=\"This is a test message\" " <>
                "tuple=\"base64-encoded-ext-term:g2gDZAADZm9vYSpkAANiYXI=\"\n"
   end
+
+  test "formats a debug log entry with a keyword list metadata" do
+    assert :erlang.iolist_to_binary(
+             LogfmtFormatter.format(
+               :debug,
+               "This is a test message",
+               {{2019, 10, 8}, {11, 58, 39, 5}},
+               kwlist: [a: 1, b: 2]
+             )
+           ) ==
+             "level=debug ts=2019-10-08T11:58:39.005+02:00 msg=\"This is a test message\" " <>
+               "kwlist=\"base64-encoded-ext-term:g2wAAAACaAJkAAFhYQFoAmQAAWJhAmo=\"\n"
+  end
 end
