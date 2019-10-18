@@ -33,6 +33,18 @@ defmodule PrettyLog.TextSanitizer do
     Formatter.prune(value)
   end
 
+  def sanitize(value) when is_integer(value) do
+    Integer.to_string(value)
+  end
+
+  def sanitize(value) when is_float(value) do
+    Float.to_string(value)
+  end
+
+  def sanitize(value) when is_pid(value) or is_port(value) or is_reference(value) do
+    inspect(value)
+  end
+
   def sanitize(value) when is_list(value) do
     value
     |> Formatter.prune()
