@@ -51,14 +51,19 @@ defmodule PrettyLog.TextSanitizer do
     |> :erlang.iolist_to_binary()
   rescue
     _ ->
-      value
-      |> :erlang.term_to_binary()
-      |> Base.encode64()
+      base64_encode_term(value)
   end
 
   def sanitize(value) do
-    value
-    |> :erlang.term_to_binary()
-    |> Base.encode64()
+    base64_encode_term(value)
+  end
+
+  defp base64_encode_term(value) do
+    b64_encoded =
+      value
+      |> :erlang.term_to_binary()
+      |> Base.encode64()
+
+    "base64-encoded-ext-term:" <> b64_encoded
   end
 end
