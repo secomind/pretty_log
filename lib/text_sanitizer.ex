@@ -26,7 +26,11 @@ defmodule PrettyLog.TextSanitizer do
   end
 
   def sanitize(value) when is_atom(value) do
-    Atom.to_string(value)
+    string_atom = Atom.to_string(value)
+
+    with "Elixir." <> no_prefix_string <- string_atom do
+      no_prefix_string
+    end
   end
 
   def sanitize(value) when is_binary(value) do
