@@ -22,3 +22,8 @@ Formatter and logger backend are two distinct components.
 - The logger backend outputs log binaries
 
 This library is focused on logs formatting, leaving to you the choice about your favourite backend.
+
+## About This Project
+
+This project has been created in order to provide better logs in [Astarte](https://github.com/astarte-platform/astarte).
+We are open to any contribution and we encourage adoption of this library, also outside Astarte, in order to provide better logs to everyone.

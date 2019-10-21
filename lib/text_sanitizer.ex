@@ -1,5 +1,5 @@
 #
-# This file is part of Astarte.
+# This file is part of PrettyLog.
 #
 # Copyright 2019 Ispirata Srl
 #
