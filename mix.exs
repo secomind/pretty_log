@@ -19,7 +19,7 @@ defmodule PrettyLog.MixProject do
 
   defp deps do
     [
-      {:logfmt, github: "bettio/logfmt-elixir", branch: "escape-quotes-and-unprintable"}
+      {:logfmt, "~> 3.3"}
     ]
   end
 end
