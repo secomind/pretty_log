@@ -2,11 +2,23 @@
 
 PrettyLog is an Elixir library which provides some ready-to-use log formatters, including a Logfmt formatter.
 
+## Installation
+- Add `:pretty_log` dependency to your project's `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:pretty_log, "~> 0.1"}
+  ]
+end
+```
+- Run `mix deps.get`
+
 ## Using PrettyLog
 
 Just change the `:format` config entry in your config/{prod,dev,test}.exs files:
 
-```
+```elixir
 -config :logger, :console, format: "[$level] $message\n"
 +config :logger, :console,
 +  format: {PrettyLog.LogfmtFormatter, :format},
