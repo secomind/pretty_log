@@ -12,13 +12,13 @@ def deps do
   ]
 end
 ```
-- Run `$ mix deps.get`
+- Run `mix deps.get`
 
 ## Using PrettyLog
 
 Just change the `:format` config entry in your config/{prod,dev,test}.exs files:
 
-```
+```elixir
 -config :logger, :console, format: "[$level] $message\n"
 +config :logger, :console,
 +  format: {PrettyLog.LogfmtFormatter, :format},
