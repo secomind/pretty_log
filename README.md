@@ -27,6 +27,12 @@ Just change the `:format` config entry in your config/{prod,dev,test}.exs files:
 
 metadata is arbitrary and optional.
 
+## Available Formatters
+
+Following formatters are included:
+- PrettyLog.LogfmtFormatter
+- PrettyLog.UserFriendlyFormatter
+
 ## Formatter Vs Backend
 
 Formatter and logger backend are two distinct components.
