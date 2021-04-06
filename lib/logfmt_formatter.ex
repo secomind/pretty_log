@@ -27,6 +27,10 @@ defmodule PrettyLog.LogfmtFormatter do
 
     pre_message_metadata = Application.get_env(:logfmt, :prepend_metadata, [])
 
+    timestamp_key_name = Application.get_env(:pretty_log, :timestamp_key_name, :ts)
+    message_key_name = Application.get_env(:pretty_log, :message_key_name, :msg)
+    level_key_name = Application.get_env(:pretty_log, :level_key_name, :level)
+
     {pre_meta, metadata} = Keyword.split(metadata, pre_message_metadata)
 
     timestamp =
@@ -41,7 +45,13 @@ defmodule PrettyLog.LogfmtFormatter do
 
     kv =
       TextSanitizer.sanitize_keyword(
-        [{:level, level}, {:ts, timestamp_string} | pre_meta] ++ [{:msg, message} | metadata]
+        [
+          {level_key_name, level},
+          {timestamp_key_name, timestamp_string} | pre_meta
+        ] ++
+          [
+            {message_key_name, message} | metadata
+          ]
       )
 
     [Logfmt.encode(kv), "\n"]
