@@ -27,6 +27,15 @@ Just change the `:format` config entry in your config/{prod,dev,test}.exs files:
 
 metadata is arbitrary and optional.
 
+You may change the default key names via the following config options, values must be atoms:
+
+```elixir
+config :pretty_log,
+  :timestamp_key_name, :when, # defaults to :ts
+  :level_key_name, :severity, # defaults to :level
+  :message_key_name, :humans, # defaults to :msg
+```
+
 ## Available Formatters
 
 Following formatters are included:
