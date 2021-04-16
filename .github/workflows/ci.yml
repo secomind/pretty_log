@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@1.0.0
+      - uses: erlef/setup-beam@1.7.0
+        with:
+          otp-version: 21.x
+          elixir-version: 1.8.x
+      - run: mix deps.get
+      - run: mix format --check-formatted
+      - run: mix test
