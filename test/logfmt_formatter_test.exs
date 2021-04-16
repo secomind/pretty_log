@@ -76,6 +76,23 @@ defmodule PrettyLog.LogfmtFormatterTest do
                "kwlist=\"base64-encoded-ext-term:g2wAAAACaAJkAAFhYQFoAmQAAWJhAmo=\"\n"
   end
 
+  test "formats a debug log entry with metadata having different types" do
+    assert :erlang.iolist_to_binary(
+             LogfmtFormatter.format(:debug, "test.", @time, a: Test, a2: :test, i: 42, f: 1.5)
+           ) ==
+             "level=debug ts=2019-10-08T11:58:39.005+#{local_tz_offset(@time)} msg=test. a=Test a2=test i=42 f=1.5\n"
+  end
+
+  test "formats a debug log entry with pid metadata" do
+    assert :erlang.iolist_to_binary(LogfmtFormatter.format(:debug, "test.", @time, p: self())) =~
+             "level=debug ts=2019-10-08T11:58:39.005+#{local_tz_offset(@time)} msg=test. p=#PID<"
+  end
+
+  test "format does not crash" do
+    assert :erlang.iolist_to_binary(LogfmtFormatter.format(:fail, "hello", :err, [])) ==
+             "LOG_FORMATTER_ERROR: {:fail, \"hello\", :err, []}\n"
+  end
+
   describe "level key name configuration" do
     setup do
       Application.put_env(:pretty_log, :level_key_name, :severity)
