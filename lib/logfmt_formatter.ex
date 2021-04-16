@@ -54,7 +54,7 @@ defmodule PrettyLog.LogfmtFormatter do
           ]
       )
 
-    [Logfmt.encode(kv), "\n"]
+    [Logfmt.encode(kv, output: :iolist), "\n"]
   rescue
     _ -> "LOG_FORMATTER_ERROR: #{inspect({level, message, timestamp, metadata})}\n"
   end
