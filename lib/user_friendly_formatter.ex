@@ -1,7 +1,7 @@
 #
 # This file is part of PrettyLog.
 #
-# Copyright 2019 Ispirata Srl
+# Copyright 2019-2021 Ispirata Srl
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 #
 
 defmodule PrettyLog.UserFriendlyFormatter do
+  alias Logger.Formatter
   alias PrettyLog.TextSanitizer
 
   def format(level, message, timestamp, metadata) do
@@ -34,17 +35,21 @@ defmodule PrettyLog.UserFriendlyFormatter do
       |> String.upcase()
       |> String.pad_trailing(5)
 
-    sanitized_message = TextSanitizer.sanitize(message)
+    sanitized_message =
+      message
+      |> TextSanitizer.sanitize()
+      |> :erlang.iolist_to_binary()
+      |> Formatter.prune()
 
     encoded_metadata =
       (pre_meta ++ metadata)
       |> TextSanitizer.sanitize_keyword()
-      |> Logfmt.encode()
+      |> Logfmt.encode(output: :iolist)
 
-    if encoded_metadata != "" do
-      "#{time_string}\t|#{level_string}| #{sanitized_message}  #{encoded_metadata}\n"
+    if encoded_metadata != [] do
+      [time_string, "\t|", level_string, "| ", sanitized_message, "  ", encoded_metadata, ?\n]
     else
-      "#{time_string}\t|#{level_string}| #{sanitized_message}\n"
+      [time_string, "\t|", level_string, "| ", sanitized_message, ?\n]
     end
   rescue
     _ -> "LOG_FORMATTER_ERROR: #{inspect({level, message, timestamp, metadata})}\n"
