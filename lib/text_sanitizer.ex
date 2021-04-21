@@ -59,8 +59,8 @@ defmodule PrettyLog.TextSanitizer do
 
   def sanitize(value) when is_list(value) do
     value
-    |> Formatter.prune()
     |> :erlang.iolist_to_binary()
+    |> Formatter.prune()
   rescue
     _ ->
       base64_encode_term(value)
