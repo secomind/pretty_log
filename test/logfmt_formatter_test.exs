@@ -76,6 +76,45 @@ defmodule PrettyLog.LogfmtFormatterTest do
                "kwlist=\"base64-encoded-ext-term:g2wAAAACaAJkAAFhYQFoAmQAAWJhAmo=\"\n"
   end
 
+  test "formats a debug log entry with a proplist metadata" do
+    assert :erlang.iolist_to_binary(
+             LogfmtFormatter.format(
+               :debug,
+               "This is a test message",
+               @time,
+               proplist: [:a, {:b, 2}]
+             )
+           ) ==
+             "level=debug ts=2019-10-08T11:58:39.005+#{local_tz_offset(@time)} msg=\"This is a test message\" " <>
+               "proplist=\"base64-encoded-ext-term:g2wAAAACZAABYWgCZAABYmECag==\"\n"
+  end
+
+  test "formats a debug log entry with an iolist metadata" do
+    assert :erlang.iolist_to_binary(
+             LogfmtFormatter.format(
+               :debug,
+               "This is a test message",
+               @time,
+               iolist: ["f", 52]
+             )
+           ) ==
+             "level=debug ts=2019-10-08T11:58:39.005+#{local_tz_offset(@time)} msg=\"This is a test message\" " <>
+               "iolist=f4\n"
+  end
+
+  test "formats a debug log entry with an improper list metadata" do
+    assert :erlang.iolist_to_binary(
+             LogfmtFormatter.format(
+               :debug,
+               "This is a test message",
+               @time,
+               notiolist: ["f", 52 | {" hello"}]
+             )
+           ) ==
+             "level=debug ts=2019-10-08T11:58:39.005+#{local_tz_offset(@time)} msg=\"This is a test message\" " <>
+               "notiolist=base64-encoded-ext-term:g2wAAAACbQAAAAFmYTRoAW0AAAAGIGhlbGxv\n"
+  end
+
   test "formats a debug log entry with metadata having different types" do
     assert :erlang.iolist_to_binary(
              LogfmtFormatter.format(:debug, "test.", @time, a: Test, a2: :test, i: 42, f: 1.5)
