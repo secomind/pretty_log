@@ -1,7 +1,7 @@
 #
 # This file is part of PrettyLog.
 #
-# Copyright 2019 Ispirata Srl
+# Copyright 2019-2021 Ispirata Srl
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@
 #
 
 defmodule PrettyLog.TextSanitizer do
-  alias Logger.Formatter
-
   def sanitize_keyword(keywords) do
     Enum.map(keywords, fn {k, v} ->
       {k, sanitize(v)}
@@ -34,7 +32,7 @@ defmodule PrettyLog.TextSanitizer do
   end
 
   def sanitize(value) when is_binary(value) do
-    Formatter.prune(value)
+    value
   end
 
   def sanitize(value) when is_integer(value) do
@@ -58,9 +56,7 @@ defmodule PrettyLog.TextSanitizer do
   end
 
   def sanitize(value) when is_list(value) do
-    value
-    |> :erlang.iolist_to_binary()
-    |> Formatter.prune()
+    :erlang.iolist_to_binary(value)
   rescue
     _ ->
       base64_encode_term(value)
