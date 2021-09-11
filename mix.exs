@@ -1,15 +1,17 @@
 defmodule PrettyLog.MixProject do
   use Mix.Project
 
+  @source_url "https://github.com/ispirata/pretty_log"
+  @version "0.9.0"
+
   def project do
     [
       app: :pretty_log,
-      version: "0.9.0",
+      version: @version,
       elixir: "~> 1.8",
       deps: deps(),
-      description: description(),
-      package: package(),
-      source_url: "https://github.com/ispirata/pretty_log"
+      docs: docs(),
+      package: package()
     ]
   end
 
@@ -20,22 +22,31 @@ defmodule PrettyLog.MixProject do
   defp deps do
     [
       {:logfmt, "~> 3.3"},
-      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
-  end
-
-  defp description do
-    "An Elixir log formatter library."
   end
 
   defp package do
     [
+      description: "An Elixir log formatter library.",
       maintainers: ["Davide Bettio"],
       licenses: ["Apache-2.0"],
       links: %{
-        "GitHub" => "https://github.com/ispirata/pretty_log",
-        "Documentation" => "http://hexdocs.pm/pretty_log/"
+        "GitHub" => @source_url
       }
+    ]
+  end
+
+  defp docs do
+    [
+      extras: [
+        "LICENSE": [title: "License"],
+        "README.md": [title: "Overview"]
+      ],
+      main: "readme",
+      source_url: @source_url,
+      source_ref: "v#{@version}",
+      formatters: ["html"]
     ]
   end
 end
